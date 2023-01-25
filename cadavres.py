@@ -12,7 +12,7 @@ class Cadavre(Item):
         if position != Vector2(0,0):
             self.position = position
 
-        self.mass = 10
+        self.mass = 2
         self.color = (200,0,0)
 
     def show(self):
