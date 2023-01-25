@@ -1,7 +1,7 @@
 from pygame import Vector2
 
 import core
-from template.toolbox_tore import draw_circle_in_tore
+from toolbox_tore import draw_circle_in_tore
 
 
 class Fustrum(object):
@@ -9,7 +9,7 @@ class Fustrum(object):
         self.radius=r
         self.parent=parent
         self.perceptionList=[]
-        self.inTore = True
+        self.inTore = False
 
     def inside(self,obj):
         if hasattr(obj,'position'):
@@ -17,6 +17,8 @@ class Fustrum(object):
 
             if hasattr(obj,"size"):
                 sizeobj = obj.size
+            elif hasattr(obj, "mass"):
+                sizeobj = obj.mass
             if obj.position.distance_to(self.parent.position) < self.radius+sizeobj:
                 return True
             if self.inTore:
@@ -29,4 +31,4 @@ class Fustrum(object):
         return False
 
     def show(self):
-        draw_circle_in_tore(self.parent.position, self.radius, width=1, color=(255,255,0))
+        core.Draw.circle((255,255,0), self.parent.position, self.radius, width=1)

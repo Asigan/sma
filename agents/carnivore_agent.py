@@ -5,37 +5,28 @@ from pygame import Vector2
 
 import core
 
-from vivarium.agent import Agent
+from agent import Agent
 
 
 class Carnivore(Agent):
     def __init__(self, body):
-        self.parent = Agent(body)
-        self.body=body
-        self.uuid=random.randint(100000,999999999)
+        super().__init__(body)
 
     def update(self):
-        superpredateurs, herbivores, carnivores = self.filtrePerception()
-
+        superpredateurs,carnivores, herbivores, decomposeurs, vegetaux, cadavres = self.filtrePerception()
         if len(superpredateurs)>0:
-            self.body.parent.acc += self.parent.repulsed(superpredateurs[0].body.parent.position, 10000, True, 0)
+            self.survie(superpredateurs)
+        elif len(herbivores)>0:
+            self.manger(herbivores)
 
-        if len(herbivores)>0:
-            self.body.parent.acc += self.parent.attracted(superpredateurs[0].body.parent.position, 500, True, 0)
+        if self.body.acc.length() == 0:
+            self.symbiose(superpredateurs, carnivores, herbivores, vegetaux)
+            if self.body.acc.length() > 0.01:
+                self.body.acc.scale_to_length(self.body.acc.length()/100)
+            self.body.acc += self.deplacement_aleatoire(1)
 
 
-    # def filtrePerception(self):
-    #     agents, items = self.parent.filtrePerception(self.body.parent())
-    #     superpredateurs = []
-    #     herbivores = []
-    #     carnivores = []
-    #     for agent in agents:
-    #         if isinstance(agent, SuperpredateurBody):
-    #             superpredateurs.append(agent)
-    #         elif isinstance(agent, HerbivoreBody):
-    #             herbivores.append(agent)
-    #         elif isinstance(agent, CarnivoreBody):
-    #             carnivores.append(agent)
-    #
-    #     return superpredateurs, herbivores, carnivores
 
+
+    def dedoubler(self):
+        return Carnivore(self.body.dedoubler())

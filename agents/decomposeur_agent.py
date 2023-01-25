@@ -4,19 +4,27 @@ from pygame import Vector2
 
 
 import core
-import vivarium.toolbox_tore
-from vivarium.body import Body
-from vivarium.item import Item
-from vivarium.agent import Agent
+import toolbox_tore
+from body import Body
+from item import Item
+from agent import Agent
 
-from vivarium.agent import Agent
+from agent import Agent
 
 
 class Decomposeur(Agent):
     def __init__(self, body):
-        self.parent = Agent(body)
-        self.body=body
-        self.uuid=random.randint(100000,999999999)
+        super().__init__(body)
 
     def update(self):
-        self.parent.update()
+        superpredateurs, carnivores, herbivores, decomposeurs, vegetaux, cadavres = self.filtrePerception()
+        if len(cadavres) > 0:
+            self.manger(cadavres)
+        if self.body.acc.length() == 0:
+            self.symbiose(superpredateurs, carnivores, herbivores, vegetaux)
+            if self.body.acc.length() > 0.01:
+                self.body.acc.scale_to_length(self.body.acc.length() / 100)
+            self.body.acc += self.deplacement_aleatoire(1)
+
+    def dedoubler(self):
+        return Decomposeur(self.body.dedoubler())

@@ -4,50 +4,43 @@ import time
 from pygame import Vector2
 
 import core
-from vivarium.agents.carnivore_agent import Carnivore
-from vivarium.furstrum import Fustrum
-from vivarium.body import Body
-from vivarium.toolbox_tore import draw_circle_in_tore
-import vivarium.agents
+from furstrum import Fustrum
+from body import Body
+from toolbox_tore import draw_circle_in_tore
+
 
 
 class CarnivoreBody(Body):
     def __init__(self):
-        self.parent = Body()
-        self.parent.size = 15
-        self.parent.vMax = 0.5
-        self.parent.accMax = 20
-        self.parent.faimMax = 100
-        self.parent.faim = random.randint(0, self.parent.faimMax / 2)
-        self.parent.fatigueMax = 100
-        self.parent.fatique = random.randint(0, self.parent.fatigueMax/2)
-        self.parent.reproductionMax = 100
-        self.parent.reproduction = random.randint(0, self.parent.reproductionMax)
-        self.parent.dateNaissance = time.time()
+        super().__init__()
+        self.size = 15
+        self.vMax = 2
+        self.accMax = 10
+        self.faimMax = 20
+        self.seuilfaim = 50
+        self.faim = 0
+        self.fatigueMax = 10
+        self.fatique = 0
+        self.reproductionMax = 100
+        self.reproduction = 0
+        self.dateNaissance = time.time()
         # on va considérer en secondes
-        self.parent.esperanceVie = 100
-        self.parent.set_champ_vision(200)
-        self.parent.color = (255,125,0)
+        self.esperanceVie = 100
+        self.set_champ_vision(200)
+        self.color = (255,125,0)
+        self.targets = ["herbivores"]
 
     def dedoubler(self):
-        print("fonction appelée")
         c = CarnivoreBody()
         v = Vector2(random.randint(-5, 5), random.randint(-5, 5))
-        c.position = self.parent.position+v
-        mutation = 0.1*random.randint(-self.parent.mutationPotential, self.parent.mutationPotential)
-        c.faimMax = self.parent.faimMax+mutation
-        mutation = 0.1*random.randint(-self.parent.mutationPotential, self.parent.mutationPotential)
-        c.fatigueMax = self.parent.fatigueMax+mutation
-        mutation = 0.1*random.randint(-self.parent.mutationPotential, self.parent.mutationPotential)
-        c.reproductionMax = self.parent.reproductionMax+mutation
-        mutation = 0.1*random.randint(-self.parent.mutationPotential, self.parent.mutationPotential)
-        c.parent.vMax = self.parent.vMax+mutation
-        self.parent.dedoubler = False
-        self.parent.reproduction=0
-        return Carnivore(c)
+        c.position = self.position+v
+        c.mutation()
+        self.aDedoubler = False
+        self.reproduction=0
+        return c
 
     def update(self):
-        self.parent.update()
+        super().update()
 
     def show(self):
-        self.parent.show()
+        super().show()
