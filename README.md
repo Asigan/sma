@@ -1,11 +1,11 @@
 # SMA - Projet noté Prey-predators
 
-Superprédateurs: rouge
-Carnivores: orange
-Herbivores: verts
-Decomposeurs: bleus en théorie (mais concrètement on ne voit que le trait du vecteur d'accélération)
-Végétaux: verts (mais petits)
-Cadavres: rouges (mais très petits)
+Superprédateurs: rouges\
+Carnivores: oranges\
+Herbivores: verts\
+Decomposeurs: bleus en théorie (mais concrètement on ne voit que le trait du vecteur d'accélération)\
+Végétaux: verts (mais petits)\
+Cadavres: rouges (mais très petits)\
 
 # Détail des spécificités:
 Appuyez sur I dans la fenêtre pour avoir les informations concernant les population dans la console
